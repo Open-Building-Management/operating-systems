@@ -28,7 +28,7 @@ from the workstation, restore the netbox-docker datas with `restore_some_volumes
 on the server :
 
 ```
-systemctl stop docker
+systemctl start docker
 cd /var/lib/docker/volumes/netbox-docker-sources/_data
 docker compose pull
 tee docker-compose.override.yml <<EOF
