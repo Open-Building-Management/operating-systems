@@ -1,4 +1,4 @@
-# operatings-systems
+# operating-systems
 
 This project uses buildroot, which requires ncurses and graphviz :
 
