@@ -1,13 +1,3 @@
-To use buildroot, you have to install ncurses and graphviz :
-
-```
-sudo apt-get install libncurses5-dev libncursesw5-dev
-sudo apt install graphviz
-```
-
-See [buildroot](https://buildroot.org/downloads/manual/manual.html#requirement-mandatory) for a list of all required dependancies
-
-
 # X86_64
 
 testing the disk.img produced with qemu
