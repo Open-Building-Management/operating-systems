@@ -1,2 +1,5 @@
-# operating-systems
-built with buildroot
+# operatings-systems
+
+built using buildroot
+
+
