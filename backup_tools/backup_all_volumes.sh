@@ -1,7 +1,12 @@
 #!/bin/bash
 
+SERVER_IP="192.168.1.91"
+if [ $1 ]; then
+  SERVER_IP=$1
+fi
+
 # Variables
-TARGET_HOST="root@192.168.1.9"
+TARGET_HOST="root@$SERVER_IP"
 TARGET_DOCKER_VOLUME_PATH="/var/lib/docker/volumes"
 LOCAL_BACKUP_DIR="$HOME/docker_backups/$(date +%Y-%m-%d_%Hh%Mm%Ss)"
 
