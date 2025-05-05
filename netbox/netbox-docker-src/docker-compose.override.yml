@@ -1,0 +1,52 @@
+services:
+  netbox:
+    restart: unless-stopped
+    environment:
+      - CSRF_TRUSTED_ORIGINS=https://netbox.dromotherm.com:8443
+      - ALLOWED_HOSTS=netbox.dromotherm.com
+    ports:
+      - 8888:8080
+
+  netbox-worker:
+    restart: unless-stopped
+
+  netbox-housekeeping:
+    restart: unless-stopped
+
+  postgres:
+    restart: unless-stopped
+
+  redis:
+    restart: unless-stopped
+
+  redis-cache:
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - dyndns_data:/etc/nginx/certs:ro
+    depends_on:
+      - netbox
+
+  acme:
+    image: alpine
+    restart: unless-stopped
+    volumes:
+      - dyndns_data:/data:rw
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOMAIN=netbox.dromotherm.com
+      - NGINX_CONTAINER=nginx
+      - RENEW_INTERVAL=86400
+    entrypoint: sh
+    command: /data/acme_run.sh
+
+volumes:
+  dyndns_data:
+    external: true
+
