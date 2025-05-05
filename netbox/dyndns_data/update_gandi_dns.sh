@@ -9,8 +9,8 @@ INTERVAL="${INTERVAL:-600}"  # Update interval (in seconds)
 # Volumes and files
 DATA_DIR="${DATA_DIR:-/data}"
 TOKEN_FILE="${TOKEN_FILE:-$DATA_DIR/gandi_ddns_token}"
-IP_FILE="${IP_FILE:-$DATA_DIR/current_ip.txt}"
-COUNTER_FILE="${COUNTER_FILE:-$DATA_DIR/gandi_ddns_counter.txt}"
+IP_FILE="${IP_FILE:-$DATA_DIR/${RECORD_NAME}${DOMAIN}-current_ip.txt}"
+COUNTER_FILE="${COUNTER_FILE:-$DATA_DIR/${RECORD_NAME}${DOMAIN}-gandi_ddns_counter.txt}"
 
 # Folder creation if needed
 mkdir -p "$DATA_DIR"

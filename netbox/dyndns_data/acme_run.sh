@@ -31,19 +31,19 @@ fi
 # Force Let's Encrypt
 $ROOT/acme.sh --set-default-ca --server letsencrypt
 
-if [ ! -f "$CERT_DIR/fullchain.cer" ] || [ ! -f "$CERT_DIR/${DOMAIN}.key" ]; then
+if [ ! -f "$CERT_DIR/fullchain.cer" ] || [ ! -f "$CERT_DIR/$DOMAIN.key" ]; then
   echo "[INFO] NO CERTS, launching initial processing"
   $ROOT/acme.sh --issue --dns dns_gandi_livedns -d "$DOMAIN"
   $ROOT/acme.sh --install-cert -d "$DOMAIN" \
-    --key-file "$CERT_DIR/${DOMAIN}.key" \
-    --fullchain-file "$CERT_DIR/fullchain.cer" \
+    --key-file "$CERT_DIR/$DOMAIN.key" \
+    --fullchain-file "$CERT_DIR/$DOMAIN-fullchain.cer" \
     --reloadcmd "docker exec $NGINX_CONTAINER nginx -s reload || true"
 fi
 
 while true; do
   if ! $ROOT/acme.sh --renew -d "$DOMAIN" \
-    --key-file "$CERT_DIR/${DOMAIN}.key" \
-    --fullchain-file "$CERT_DIR/fullchain.cer" \
+    --key-file "$CERT_DIR/$DOMAIN.key" \
+    --fullchain-file "$CERT_DIR/$DOMAIN-fullchain.cer" \
     --reloadcmd "docker exec $NGINX_CONTAINER nginx -s reload || true"; then
     echo "[WARN] RENEWAL PROCESS SKIPPED :-)"
   else
