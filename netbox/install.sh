@@ -24,9 +24,9 @@ else
 fi
 
 # Synchroniser les répertoires dans le répertoire cible
-rsync -a $DRYRUN ./dyndns_data/       "$TARGET_DIR/dyndns_data/"
-rsync -a $DRYRUN ./netbox-docker/     "$TARGET_DIR/netbox-docker/"
-rsync -a $DRYRUN ./netbox-docker_netbox-scripts-files/ "$TARGET_DIR/netbox-docker_netbox-scripts-files/"
+rsync -av $DRYRUN ./dyndns_data/       "$TARGET_DIR/dyndns_data/"
+rsync -av $DRYRUN ./netbox-docker/     "$TARGET_DIR/netbox-docker/"
+rsync -av $DRYRUN ./netbox-docker_netbox-scripts-files/ "$TARGET_DIR/netbox-docker_netbox-scripts-files/"
 
 echo "[INFO] Synchronisation terminée dans $TARGET_DIR"
 
