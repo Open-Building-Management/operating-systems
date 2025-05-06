@@ -13,7 +13,7 @@ from the workstation, restore the netbox-docker datas with `restore_some_volumes
 ```
 ./restore_some_volumes.sh ip_target netbox-docker docker_backups/now
 ```
-Restart the docker daemon : ssh root@ip_target "systemctl start docker"
+Restart the docker daemon : `ssh root@ip_target "systemctl start docker"`
 
 # start the netbox compose stack
 
