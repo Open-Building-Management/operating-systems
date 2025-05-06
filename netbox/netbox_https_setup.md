@@ -1,21 +1,6 @@
-# 📘 NetBox Deployment with HTTPS (Let's Encrypt via Gandi DNS)
+# 📦 Docker Compose Stack 🛠️
 
-This document summarizes the setup of a secure NetBox instance using Docker Compose, Nginx as a reverse proxy, and automatic TLS certificate management via `acme.sh` and Gandi's DNS API.
-
-
-`./install.sh now` updates the relevant files in an existing backup that you already have on `~/docker_backups/now`
-
-Be sure the Gandi LiveDNS API token is filled in the dyndns_data volume :
-
-```text
-/_data/gandi_ddns_token
-```
-
----
-
-## 📦 Docker Compose Stack 🛠️
-
-### Services
+## Services
 
 - **Official NetBox containers.** from https://github.com/netbox-community/netbox-docker
 - **`nginx`**: reverse proxy providing HTTPS on port `8443`.
@@ -34,13 +19,13 @@ The container needs the Docker socket:
 - /var/run/docker.sock:/var/run/docker.sock
 ```
 
-### Volumes
+## Volumes
 
 - **`dyndns_data`**: Gandi token, dns and acme scripts, certs, etc.
 - **`netbox-docker`**: netbox-docker source code (cloned through git) plus docker-compose.override.yml and nginx.conf
 ---
 
-### 🌍 Required Environment Variables
+## 🌍 Required Environment Variables
 
 - `netbox` container :
 
@@ -61,7 +46,7 @@ RENEW_INTERVAL=86400
 
 ---
 
-## ✅ Key Takeaways
+# ✅ Key Takeaways
 
 - ✅ No need to modify `netbox_docker/configration/configuration.py` manually.
 - ✅ HTTPS works on custom port (`8443`).

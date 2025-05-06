@@ -1,19 +1,32 @@
-# netbox change admin password :
+# 📘 NetBox Deployment with HTTPS (Let's Encrypt via Gandi DNS)
 
-`/opt/netbox/netbox/manage.py changepassword admin`
+Setup of a secure NetBox instance using Docker Compose, Nginx as a reverse proxy, and automatic TLS certificate management via `acme.sh` and Gandi's DNS API.
 
-# restore volumes
+You may have an existing backup of your docker volumes on `~/docker_backups/now`
+
+# updates relevant files in an existing backup or initiates a new tree with mandatory files
+
+`./install.sh now` 
+
+Be sure the Gandi LiveDNS API token is filled in :
+
+```text
+~/docker_backups/now/dyndns_data/_data/gandi_ddns_token
+```
+
+# restore volumes to the target server
 
 from the workstation :
 
-Stop the docker daemon : `ssh root@ip_target "systemctl stop docker"`
+- stop the docker daemon : `ssh root@ip_target "systemctl stop docker"`
 
-from the workstation, restore the netbox-docker datas with `restore_some_volumes.sh` from the backup_tools folder of this repo
+- restore with rsync :
 
 ```
-./restore_some_volumes.sh ip_target netbox-docker docker_backups/now
+../backup_tools/restore_some_volumes.sh ip_target netbox-docker docker_backups/now
+../backup_tools/restore_some_volumes.sh ip_target dyndns_data docker_backups/now
 ```
-Restart the docker daemon : `ssh root@ip_target "systemctl start docker"`
+- restart the docker daemon : `ssh root@ip_target "systemctl start docker"`
 
 # start the netbox compose stack
 
@@ -33,3 +46,9 @@ WARN[0000] volume "netbox-docker_netbox-redis-data" already exists but was not c
 ```
 
 There are some maintenance scripts for the `netbox-docker_netbox-scripts-files` worker
+
+---
+
+# netbox change admin password :
+
+`/opt/netbox/netbox/manage.py changepassword admin`
