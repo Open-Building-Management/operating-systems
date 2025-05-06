@@ -20,7 +20,7 @@ Restart the docker daemon : `ssh root@ip_target "systemctl start docker"`
 ssh to the server and run :
 
 ```
-cd /var/lib/docker/volumes/netbox-docker-sources/_data
+cd /var/lib/docker/volumes/netbox-docker/_data
 docker compose pull
 docker compose -p "netbox-docker" up -d
 ```
