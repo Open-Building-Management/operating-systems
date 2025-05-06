@@ -18,16 +18,16 @@ This document summarizes the setup of a secure NetBox instance using Docker Comp
 - **`netbox-docker-src`**: netbox-docker source code (cloned through git) plus docker-compose.override.yml and nginx.conf
 ---
 
-Create a new volume named `netbox-docker-src`
+Create a new volume named `netbox-docker`
 
 Create a new git container through portainer UI :
 - name : `get-netbox-docker-src`
 - image : `alpine/git`
 - Commands & logging > Command > Override : `clone --depth 1 https://github.com/netbox-community/netbox-docker.git /data`
 - Volumes > container | `/data`
-- Volumes > volume : choose `netbox-docker-src - local` in the selector
+- Volumes > volume : choose `netbox-docker - local` in the selector
  
-We now have the netbox-docker sources in `/var/lib/docker/volumes/netbox-docker-src/_data` on the server
+We now have the netbox-docker sources in `/var/lib/docker/volumes/netbox-docker/_data` on the server
 
 ## 🌍 Required Environment Variables
 
