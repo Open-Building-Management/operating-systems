@@ -2,15 +2,15 @@
 
 # === Variables ===
 DOMAIN="${DOMAIN:-dromotherm.com}"
-RECORD_NAME="${RECORD_NAME:-netbox}"
+RECORD_NAMES="${RECORD_NAME:-netbox}"  # one or more record(s) separated by a blank space
 TTL="${TTL:-300}"       # DEFAULT TTL (in seconds)
 INTERVAL="${INTERVAL:-600}"  # Update interval (in seconds)
 
 # Volumes and files
 DATA_DIR="${DATA_DIR:-/data}"
 TOKEN_FILE="${TOKEN_FILE:-$DATA_DIR/gandi_ddns_token}"
-IP_FILE="${IP_FILE:-$DATA_DIR/${RECORD_NAME}${DOMAIN}-current_ip.txt}"
-COUNTER_FILE="${COUNTER_FILE:-$DATA_DIR/${RECORD_NAME}${DOMAIN}-gandi_ddns_counter.txt}"
+IP_FILE="${IP_FILE:-$DATA_DIR/${DOMAIN//./_}-current_ip.txt}"
+COUNTER_FILE="${COUNTER_FILE:-$DATA_DIR/${DOMAIN//./_}-gandi_ddns_counter.txt}"
 
 # Folder creation if needed
 mkdir -p "$DATA_DIR"
@@ -40,21 +40,30 @@ while true; do
 
     if [ ! -f "$IP_FILE" ] || [ "$CURRENT_IP" != "$(cat "$IP_FILE")" ]; then
         echo "[$(date)] NEW IP : $CURRENT_IP"
+        SUCCESS=1
 
-        # DNS UPDATE VIA GANDI API
-        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X PUT \
-            "https://api.gandi.net/v5/livedns/domains/$DOMAIN/records/$RECORD_NAME/A" \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Content-Type: application/json" \
-            --data "{\"rrset_values\": [\"$CURRENT_IP\"], \"rrset_ttl\": $TTL}")
+        for NAME in $RECORD_NAMES; do
+            echo "[$(date)] Updating DNS for $NAME.$DOMAIN"
 
-        if [ "$RESPONSE" == "200" ] || [ "$RESPONSE" == "201" ]; then
+            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X PUT \
+                "https://api.gandi.net/v5/livedns/domains/$DOMAIN/records/$NAME/A" \
+                -H "Authorization: Bearer $TOKEN" \
+                -H "Content-Type: application/json" \
+                --data "{\"rrset_values\": [\"$CURRENT_IP\"], \"rrset_ttl\": $TTL}")
+
+            if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "201" ]; then
+                echo "[$(date)] SUCCESS: $NAME.$DOMAIN updated"
+            else
+                echo "[$(date)] FAILURE: $NAME.$DOMAIN not updated (HTTP $RESPONSE)"
+                SUCCESS=0
+            fi
+        done
+
+        if [ "$SUCCESS" -eq 1 ]; then
             echo "$CURRENT_IP" > "$IP_FILE"
             COUNT=$(cat "$COUNTER_FILE")
             echo $((COUNT + 1)) > "$COUNTER_FILE"
-            echo "[$(date)] DNS UPDATE SUCCESS #$((COUNT + 1))"
-        else
-            echo "[$(date)] DNS UPDATE FAILURE (HTTP $RESPONSE)"
+            echo "[$(date)] ALL RECORDS UPDATED SUCCESSFULLY #$((COUNT + 1))"
         fi
     else
         echo "[$(date)] IP STILL VALID ($CURRENT_IP)"
