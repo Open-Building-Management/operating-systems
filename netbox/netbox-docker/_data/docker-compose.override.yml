@@ -48,6 +48,18 @@ services:
     entrypoint: sh
     command: /data/acme_run.sh
 
+  update_gandi_dns:
+    image: alpine
+    restart: unless-stopped
+    volumes:
+      - dyndns_data:/data:rw
+    environment:
+      - DOMAIN=dromotherm.com
+      - RECORD_NAME=netbox
+      - TTL=600
+      - INTERVAL=600
+    command: /data/update_gandi_dns.sh
+
 volumes:
   dyndns_data:
     external: true
