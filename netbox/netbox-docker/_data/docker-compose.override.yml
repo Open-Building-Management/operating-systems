@@ -1,9 +1,11 @@
 services:
   netbox:
     restart: unless-stopped
+    healthcheck:
+      interval: 10m
     environment:
-      - CSRF_TRUSTED_ORIGINS=https://netbox.dromotherm.com:8443
-      - ALLOWED_HOSTS=netbox.dromotherm.com
+      - CSRF_TRUSTED_ORIGINS=http://192.168.1.113:8888 https://netbox.dromotherm.com:8443
+      - ALLOWED_HOSTS=192.168.1.113 netbox.dromotherm.com
     ports:
       - 8888:8080
 

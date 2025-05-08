@@ -47,6 +47,17 @@ WARN[0000] volume "netbox-docker_netbox-redis-data" already exists but was not c
 
 There are some maintenance scripts for the `netbox-docker_netbox-scripts-files` worker
 
+identify which user run the netbox container :
+```
+docker compose -p "netbox-docker" exec netbox sh -c 'id -u && id -g'
+999
+0
+```
+
+Adapt the permissions on the media folder :
+```
+sudo chown -R 999:999 /srv/docker/netbox/media/
+```
 ---
 
 # netbox change admin password :
