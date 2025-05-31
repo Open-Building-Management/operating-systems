@@ -88,6 +88,10 @@ docker should warn about existing volumes and tell to use external: true, but al
 WARN[0000] volume "netbox-docker_netbox-redis-data" already exists but was not created by Docker Compose. Use `external: true` to use an existing volume 
 ```
 
+If first time run, you have to create a superuser : `docker compose exec netbox /opt/netbox/netbox/manage.py createsuperuser`
+
+cf https://github.com/netbox-community/netbox-docker/wiki/Getting-Started
+
 There are some maintenance scripts for the `netbox-docker_netbox-scripts-files` worker
 
 identify which user run the netbox container :
