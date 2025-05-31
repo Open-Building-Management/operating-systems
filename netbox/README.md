@@ -24,9 +24,30 @@ Be sure the Gandi LiveDNS API token is filled in :
 
 ## use an existing backup of your docker volumes
 
-The volumes to be restored should have the `netbox-docker` pattern in their names
+The netbox related volumes should start with the `netbox-docker` pattern
 
-Be sure you have a netbox-docker volume with the files from the netbox-docker github repository
+Example of a volumes structure :
+
+```
+|-- dyndns_data
+|   `-- _data
+|       |-- acme_run.sh
+|       |-- dromotherm_com-current_ip.txt
+|       |-- dromotherm_com-gandi_ddns_counter.txt
+|       |-- gandi_ddns_token
+|       |-- netbox.dromotherm.com-fullchain.cer
+|       |-- netbox.dromotherm.com.key
+|       `-- update_gandi_dns.sh
+|-- netbox-docker
+|-- netbox-docker_netbox-media-files
+|-- netbox-docker_netbox-postgres-data
+|-- netbox-docker_netbox-redis-cache-data
+|-- netbox-docker_netbox-redis-data
+|-- netbox-docker_netbox-reports-files
+|-- netbox-docker_netbox-scripts-files
+```
+
+Be sure the `netbox-docker` volume contains the files from the netbox-docker github repository, otherwise the netbox-docker stack will not start
 
 ## restore all volumes automatically to the target server
 
