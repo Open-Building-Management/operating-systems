@@ -2,9 +2,17 @@
 
 Setup of a secure NetBox instance using Docker Compose, Nginx as a reverse proxy, and automatic TLS certificate management via `acme.sh` and Gandi's DNS API.
 
-You may have an existing backup of your docker volumes on `~/docker_backups/now`
+# data volumes
 
-# updates relevant files in an existing backup or initiates a new tree with mandatory files
+The machine used to configure the server is called the **development station**
+
+The following assumes the volumes to upload to the server are in `~/docker_backups/now` on your development station
+
+Adapt the commands if the volumes are somewhere else on your development station
+
+## initiate a new tree with mandatory files
+
+From the `operating-systems/netbox` folder :
 
 `./install.sh now` 
 
@@ -14,9 +22,13 @@ Be sure the Gandi LiveDNS API token is filled in :
 ~/docker_backups/now/dyndns_data/_data/gandi_ddns_token
 ```
 
-# restore volumes to the target server
+## use an existing backup of your docker volumes
 
-from the workstation :
+Be sure you have a netbox-docker volume with the files from the netbox-docker github repository
+
+## restore all volumes automatically to the target server
+
+From the workstation, still in the `operating-systems/netbox` folder :
 
 - stop the docker daemon : `ssh root@ip_target "systemctl stop docker"`
 
@@ -27,6 +39,14 @@ from the workstation :
 ../backup_tools/restore_some_volumes.sh ip_target dyndns_data docker_backups/now
 ```
 - restart the docker daemon : `ssh root@ip_target "systemctl start docker"`
+
+## restore manually, volume per volume
+
+From the parent folder of the volume to be restored :
+
+```
+rsync -avz -e ssh netbox-docker "root@ip_target:/var/lib/docker/volumes"
+```
 
 # start the netbox compose stack
 
