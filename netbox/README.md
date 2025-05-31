@@ -24,6 +24,8 @@ Be sure the Gandi LiveDNS API token is filled in :
 
 ## use an existing backup of your docker volumes
 
+The volumes to be restored should have the `netbox-docker` pattern in their names
+
 Be sure you have a netbox-docker volume with the files from the netbox-docker github repository
 
 ## restore all volumes automatically to the target server
